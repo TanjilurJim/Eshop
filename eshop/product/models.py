@@ -12,7 +12,7 @@ class Category(models.TextChoices): ##text choices used for dropdown
     KITCHEN = 'Kitchen'
 
 
-class Product(modesl.Model):
+class Product(models.Model):
     name = models.CharField(max_length=200, default="", blank = False)
     description = models.TextField(max_length=1000, default="", blank=False)
     price = models.DecimalField(max_digits=7, decimal_places=2, default=0)
@@ -22,6 +22,10 @@ class Product(modesl.Model):
     stock = models.IntegerField(default=0)
     user = models.ForeignKey(User, on_delete=models.SET_NULL, null=True) #To create a relationship with the user. Set_null is used beacuse if the user is deleted don't delete the product just make the user null
     createdAt = models.DateTimeField(auto_now_add=True) # new product will automatically create date and time
+
+    def __str__(self):
+        return self.name
+    
 
     
 
