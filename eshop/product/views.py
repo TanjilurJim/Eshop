@@ -1,6 +1,8 @@
-from django.shortcuts import render
+from django.shortcuts import render, get_object_or_404
 from rest_framework.decorators import api_view
 from rest_framework.response import Response
+
+from .serializers import ProductSerializer
 
 from . models import Product
 
@@ -10,7 +12,20 @@ def get_products(request):
 
     products = Product.objects.all() #it will get all the objects from db
 
-    print(products )
+    # print(products )
 
-    return Response({"Hello": 'hello'})
+    serializer = ProductSerializer(products, many = True)
 
+
+
+    return Response({"products": serializer.data})
+
+
+@api_view(['GET'])
+def get_product(request, pk):
+
+    product = get_object_or_404(Product, id=pk)
+
+    serializer = ProductSerializer(product, many=False)
+
+    return Response({"product": serializer.data})
