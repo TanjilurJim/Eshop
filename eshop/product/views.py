@@ -3,18 +3,20 @@ from rest_framework.decorators import api_view
 from rest_framework.response import Response
 
 from .serializers import ProductSerializer
-
+from . filters import ProductsFilter
 from . models import Product
 
 # Create your views here.
 @api_view(['GET'])
 def get_products(request):
 
-    products = Product.objects.all() #it will get all the objects from db
+    filterset = ProductsFilter(request.GET, queryset=Product.objects.all().order_by('id'))
+
+    # products = Product.objects.all() #it will get all the objects from db
 
     # print(products )
 
-    serializer = ProductSerializer(products, many = True)
+    serializer = ProductSerializer(filterset.qs, many = True)
 
 
 
